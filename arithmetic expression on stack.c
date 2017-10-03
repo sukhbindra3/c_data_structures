@@ -1,0 +1,107 @@
+#include<stdio.h>
+#include<string.h>
+#define N 100
+#define ISOPERATOR(c) c=='+' || c=='-' || c=='*' || c=='/'
+
+typedef struct stack{
+	int top;
+	int A[N];
+} stack;
+
+int is_empty(stack *pps);
+void push(int x,int *povf,stack *ps);
+int evaluate(char *p);
+void pop(int *punf,stack *ps);
+
+int main(){
+	int result;
+	char c[N];
+	printf("\nEnter the postfix expression : ");
+	gets(c);
+	printf("\n\nResult is : %d",evaluate(c));
+	return 0;
+}
+
+int is_empty(stack *pps){
+	if(pps->top == -1)
+		return 1;
+	else
+		return 0;
+}
+
+int evaluate(char *p){
+	stack s;
+	s.top=-1;
+	printf("\nExpression\t\t\t\t\t  STACK\n");
+	printf("\n............................................................\n");
+	printf("\n%s",p);
+	int i=0,j,flag,unf=0,ovf=0,op1,op2,res,temp;
+    while(p[i]){
+        flag=0;
+        if(p[i]>='0' && p[i]<='9'){
+            temp=0;
+            while(p[i]!=' '){
+                temp=temp*10+(p[i]-'0');
+                i++;
+            }
+            push(temp,&ovf,&s);
+            flag=1;
+        }
+		else if(ISOPERATOR(p[i])){
+			op2=pop(&unf,&s);
+			op1=pop(&unf,&s);
+			switch(p[i]){
+				case '+':
+					push(op1+op2,&ovf,&s);
+					break;
+				case '-':
+					push(op1-op2,&ovf,&s);
+					break;
+				case '*':
+					push(op1*op2,&ovf,&s);
+					break;
+				case '/':
+					push(op1/op2,&ovf,&s);
+					break;
+			}
+            flag=1;
+			i++;
+		}
+		else
+            i++;
+        if(flag){
+            printf("\n\t\t\t\t\t\t");
+            for(j=0;j<=s.top;j++)
+            printf(" | %d",s.A[j]);
+            printf("\n............................................................");
+            j=i;
+            printf("\n");
+            while(p[j])
+                printf("%c",p[j++]);
+        }
+    }
+	res=pop(&unf,&s);
+	return res;
+}
+
+void push(int x,int *povf,stack *ps){
+	if(ps->top==N-1){
+		printf("\nStack overflow");
+		*povf=1;
+		return ;
+	}
+	*povf=0;
+	ps->A[++(ps->top)] = x;
+}
+
+void pop(int *punf,stack *ps){
+	int res;
+	if(is_empty(ps)){
+		printf("\nStack underflow");
+		*punf=1;
+		return ;
+	}
+	*punf=0;
+	res=ps->A[ps->top--];
+}
+
