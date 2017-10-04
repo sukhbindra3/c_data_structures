@@ -18,7 +18,7 @@ int main(){
 	initialize_queue();
 	int option,x;
 	char ch;
-		printf("\n\t\t\t================================================ \n\t\t\tImplementation of queue using linear linked list \n\t\t\t================================================");
+		printf("\n\t\t\t================================================ \n\t\t\tImplementation of queue using circular linked list \n\t\t\t================================================");
 	printf("\n\t\t\t\t\t\t\t\t\t\t\t\tSukhbindra Singh Rawat");
 	do{
 		printf("\n1.Enqueue \n2.Dequeue \n3.Display the queue");
